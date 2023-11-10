@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <style>
+       *{
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+       }
+
+       #head{
+        display: flex;
+        flex-direction: row;
+        justify-content: center;
+        align-items: center;
+        position: relative;
+        top: 70px;
+       }
+       #input{
+        width: 350px;
+        height: 35px;
+        border: none;
+        box-shadow: 0 0 5px gray;
+        border-radius: 4px;
+        font-size: large;
+      
+       }
+       #btn{
+        width: 100px;
+        height: 35px;
+        border-radius: 4px;
+        border: none;
+        box-shadow: 0 0 5px gray;
+        background-color: lightsalmon;
+        color:rgb(55, 77, 201);
+        font-size: large;
+        font-weight: bold;
+        font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+       }
+       #btn:hover{
+        background-color: salmon;
+        color: blue;
+       }
+       #body{
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        align-items: center;
+        margin: 100px 0 0 0;
+        padding: 20px;
+
+       }
+       #text{
+        color: rgb(74, 74, 177);
+        font-size:xx-large ;
+        margin: 200px;
+        
+       }
+       #showMore{
+        display: none;
+        width:170px;
+        height: 35px;
+        border-radius: 4px;
+        border: none;
+        box-shadow: 0 0 5px gray;
+        background-color: lightsalmon;
+        color:rgb(55, 77, 201);
+        font-size: large;
+        font-weight: bold;
+        font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+        margin-bottom: 50px;
+       }
+       #showMore:hover{
+        background-color: salmon;
+        color: blue;
+       }
+       .hover{
+        display: block;
+        box-shadow: 0 0 5px gray;
+   
+       }
+       .hover:hover{
+        transform: scale(1.1);
+        transition: ease-in-out;
+       }
+
+       
+    </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+   <div class="container" style="display: flex; flex-direction: column; align-items: center;justify-content: center;">
+         <div id="head">
+             <div id="input_box">
+               <input type="text" name="" id="input" placeholder="Search for Images...">
+              <button id="btn">
+                  Search
+               </button>
+          </div>
+    </div>
+      <div id="body">
+       </div>
+       <button id="showMore">Show more</button>
+     
+   </div>
+
+    <script>
+
+            // const accessKey = "RZEIOVfPhS7vMLkFdd2TSKGFBS4o9_FmcV1Nje3FSjw";
+
+            // const res = await fetch(`https://api.unsplash.com/search/photos?page=${page}&query=${search_data}&client_id=${accessKey}`);
+        let btn=document.querySelector("#btn");
+        let input=document.querySelector("#input");
+        let body=document.querySelector("#body");
+        let showMoreBtn=document.querySelector("#showMore");
+
+
+        function append(data){
+   
+            console.log(data);
+        
+            for(let i=0;i<data.results.length;i++)
+            {
+             let div1= document.createElement("div");
+              div1.classList="hover";
+              div1.style.margin="10px"
+              // div.style.hover=""
+              div1.innerHTML=`<img src="${data.results[i].urls.raw}" height
+              ="250px" width="400px"/><h3 style=font-size:15px;padding:5px>${data.results[i].alt_description}</h3>`;
+              let anchorTag=document.createElement("a");
+              anchorTag.href=`${data.results[i].links.html}`;
+              anchorTag.appendChild(div1);
+              body.appendChild(anchorTag);
+            }
+          
+       
+           }
+           let page=1;
+
+         async function imageFinder()
+         {
+          let response=await fetch(`https://api.unsplash.com/search/photos?page=${page}&query=${input.value}&client_id=RZEIOVfPhS7vMLkFdd2TSKGFBS4o9_FmcV1Nje3FSjw`)
+          let data=await response.json();
+          console.log(data);
+          append(data);
+          page++;
+          showMoreBtn.style.display="block";
+        
+
+          }
+
+
+
+
+
+   btn.addEventListener("click",function(){
+    imageFinder();
+    body.innerHTML="";
+   })
+
+
+
+    showMoreBtn.addEventListener("click",function(){
+ 
+      imageFinder();
+    })
+      
+
+    </script>
+</body>
+</html>
